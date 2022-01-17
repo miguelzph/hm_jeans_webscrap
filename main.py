@@ -7,7 +7,7 @@ from flask import Flask
 from main_hm import hm_webscraping
 from jobs import sql_to_json
 
-# function from schedule documentation
+# function from schedule documentation --> interval removed
 def run_continuously():
     """Continuously run, while executing pending jobs at each
     elapsed time interval.
