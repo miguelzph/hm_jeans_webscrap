@@ -41,6 +41,12 @@ def hm_webscraping():
     for _id in df_products['product_id']:
         # dict with characteristics of a a single product
         dict_product = j2.get_characteristics_of_a_product(_id, headers)
+        if dict_product:
+            pass # code 200 --> no problem
+        else:
+            logger.debug(f'Product {_id} FAILED')
+            time.sleep(1)
+            continue   
         # appending
         df_charac = df_charac.append(dict_product, ignore_index=True)
         #logger.debug(f'Product {_id} collect done')

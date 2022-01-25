@@ -129,7 +129,10 @@ dmypy.json
 .pyre/
 
 # Replit files
+jobs/__pycache__/
+jobs/hm/__pycache__/
 Logs/
 *.sqlite
 *.lock
 *.toml
+*.log

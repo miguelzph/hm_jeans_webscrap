@@ -3,18 +3,25 @@ import time
 from bs4 import BeautifulSoup
 
 
-def get_a_soup(url, headers, tentatives=5):
+def get_a_soup(url, headers):
     page = requests.get(url, headers=headers)
-    soup = BeautifulSoup(page.text, 'html.parser')
-    
-    return soup
+    if page.status_code == 200:
+        soup = BeautifulSoup(page.text, 'html.parser')
+        return soup
+    else:
+        return False
 
 def get_characteristics_of_a_product(id_, headers):
     '''returns a dict with characteristics of a a single product (you can use to append a dataframe)'''
     # getting a soup
     url = f'https://www2.hm.com/en_us/productpage.{id_}.html'
     soup = get_a_soup(url, headers=headers)
+    if soup:
+        pass # code 200 --> no problem
+    else:
+        return False
 
+    
     # ===================== color ==============================
     colors = soup.find('ul', class_='inputlist clearfix')
 
