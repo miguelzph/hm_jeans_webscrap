@@ -133,4 +133,4 @@ dmypy.json
 *.sqlite
 *.lock
 *.toml
-/Logs
+Logs/
