@@ -130,7 +130,7 @@ dmypy.json
 
 # Replit files
 **/__pycache__
-database_hm.sqlite
+database_hm.sqlite3
 *.lock
 *.toml
-*Logs/
+Logs/
