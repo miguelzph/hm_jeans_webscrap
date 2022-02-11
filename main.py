@@ -44,7 +44,7 @@ def send_data():
 
 
 def run_app():
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=8080)
 
 schedule.every().seconds.do(run_app)
 
