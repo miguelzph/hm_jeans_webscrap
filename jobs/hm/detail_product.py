@@ -1,6 +1,8 @@
 import requests
 import time
 from bs4 import BeautifulSoup
+import json
+import re
 
 
 def get_a_soup(url, headers):
@@ -31,23 +33,34 @@ def get_characteristics_of_a_product(id_, headers):
     
     # ===================== other characteristics==============================
 
-    characteristics = soup.find('div', class_='content pdp-text pdp-content')
-    characteristics_list = characteristics.find_all('div', class_='pdp-description-list-item')
+    characteristics = soup.find(class_='js-before-secondary-images').find('div')
+    x = characteristics.find_all('script')[-1].text
+    # cleaning 
+    x = x.replace('\r', '').replace('\t', '').replace('\n', '').replace('\\"', '').replace("\\'","")
 
-    # title of characteristics
-    characteristics_title = [char.find('dt').text for char in characteristics_list]
-
-    # characteristics
     # getting the data
-    characteristics = [char.find_all(['li','dd']) for char in characteristics_list]
-    # cleaning the data -- > x is a list
-    characteristics = [x if len(x)==1 else x[1:] for x in characteristics]
-    # transforming the data --> x is a list // y is a value of a list x
-    characteristics = [x[0].text if len(x)==1 else [y.text for y in x] for x in characteristics]
+    p = re.search('\[.*(s*{.*}s*).*\]', x).group(0)
+
+    # needs to be " " to the json.loads work
+    p = p.replace("'", '"')
+    p = p.replace('title', '"title"')
+    p = p.replace('values', '"values"')
+
+    # json format
+    json_data = json.loads(p)
 
     # ===================== creating a dict to return ==============================
+    
+    dict_product_characteristics = {}
+    
+    # adding to the return dict
+    for line  in json_data:
+        title = line['title']
+        content = line['values']
+        if len(content) == 1:
+            content = content[0]
+        dict_product_characteristics[title] = content
 
-    dict_product_characteristics = {characteristics_title[i]: characteristics[i] for i in range(len(characteristics))}
     dict_product_characteristics['product_color'] = product_colors #'|'.join(product_colors)
     
     return dict_product_characteristics
